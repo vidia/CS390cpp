@@ -37,7 +37,7 @@ class Drawing
 {
 public:
 	// Mode of the Drawing editor.
-	enum EditMode { SelectMode, NewLineMode, NewRectangleMode };
+	enum EditMode { SelectMode, NewLineMode, NewRectangleMode, NewOvalMode };
 
 	// Mouse Button Mode.
 	enum MouseMode { NoButtonPressed, ButtonPressed };
@@ -111,5 +111,7 @@ public:
 
 	// Return true if there is a selected figure close to (x,y)
 	bool isAnySelectedFigureCloseTo(int x, int y);
+
+	void deleteSelected(CView * cview);
 };
 

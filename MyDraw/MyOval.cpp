@@ -24,17 +24,28 @@ void MyOval::draw(CDC* pDC)
 	int maxX = (p0->getX()<p1->getX()) ? p1->getX() : p0->getX();
 	int maxY = (p0->getY()<p1->getY()) ? p1->getY() : p0->getY();
 
-	// Draw MyOval
+	int rx = (maxX - minX) / 2; 
+	int ry = (maxY - minY) / 2; 
+	int cx = (maxX + minX) / 2; 
+	int cy = (maxY + minY) / 2; 
+
 	CPen pen(PS_SOLID, 0, RGB(0, 0, 0));
 	CPen* pOldPen = pDC->SelectObject(&pen);
-	pDC->MoveTo(minX, minY);
-	pDC->LineTo(maxX, minY);
-	pDC->LineTo(maxX, maxY);
-	pDC->LineTo(minX, maxY);
-	pDC->LineTo(minX, minY);
+	pDC->MoveTo((maxX-minX)/2 + minX, minY);
+
+	for (float i = 0; i <= 2*3.14159; i += .01) {
+		int x = cx + cos(i) * rx; 
+		int y = cy + sin(i) * ry; 
+		
+		if( i == 0 ) pDC->MoveTo(x, y);
+		else 
+			pDC->LineTo(x, y); 
+	}
 }
 
 // Return true if MyOval is close to coordinates (x,y)
+//Defaults to rectangle prox. Change to calc angle then 
+//check distance
 bool MyOval::isCloseTo(int x, int y)
 {
 	ControlPoint * p0 = controlPoints.at(0);
@@ -46,12 +57,22 @@ bool MyOval::isCloseTo(int x, int y)
 	int maxX = (p0->getX()<p1->getX()) ? p1->getX() : p0->getX();
 	int maxY = (p0->getY()<p1->getY()) ? p1->getY() : p0->getY();
 
-	// Check if (x,y) is close to any of the borders.
-	if (Figure::distancePointToLine(x, y, minX, minY, maxX, minY) < Figure::smallDistance ||
-		Figure::distancePointToLine(x, y, maxX, minY, maxX, maxY) < Figure::smallDistance ||
-		Figure::distancePointToLine(x, y, minX, maxY, maxX, maxY) < Figure::smallDistance ||
-		Figure::distancePointToLine(x, y, minX, minY, minX, maxY) < Figure::smallDistance) {
-		return true;
+
+	int rx = (maxX - minX) / 2;
+	int ry = (maxY - minY) / 2;
+	int cx = (maxX + minX) / 2;
+	int cy = (maxY + minY) / 2;
+
+	float angle = atan2(y - cy, x - cx);
+
+	int _x = cx + cos(angle) * rx;
+	int _y = cy + sin(angle) * ry;
+
+	double dist = sqrt((_x - x)*(_x - x) + (_y - y)*(_y - y));
+	dist = (dist>0) ? dist : -dist;
+
+	if (dist < Figure::smallDistance) {
+		return true; 
 	}
 
 	return false;

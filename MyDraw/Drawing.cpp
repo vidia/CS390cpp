@@ -24,6 +24,7 @@ MERCHANTABILITY AND FITNESS FOR ANY PARTICULAR PURPOSE.
 #include "Line.h"
 #include "Figure.h"
 #include "Rectangle.h"
+#include "MyOval.h"
 
 // Constructor/Destructor
 Drawing::Drawing(void)
@@ -59,6 +60,24 @@ void
 Drawing::setEditMode(EditMode mode)
 {
 	this->editMode = mode;
+}
+
+void
+Drawing::deleteSelected(CView * cview) {
+
+	std::vector<int>::size_type i = 0;
+	while (i < figures.size()) {
+		if (figures[i]->isSelected()) {
+			Figure * f = figures[i];
+			figures.erase(figures.begin() + i);
+			delete f;
+		}
+		else
+			i++; 
+	}
+
+	// Redraw window. This will call the draw method.
+	cview->RedrawWindow();
 }
 
 // Call back when the mouse is pressed, moved, or released.
@@ -123,6 +142,32 @@ Drawing::OnMouse(CView * cview, int nFlags, CPoint point) {
 				// so dragging will modify this control point.
 				this->selectAll(false);
 				rect->selectLast(true);
+
+				// Update previous mouse coordinates
+				this->previousX = point.x;
+				this->previousY = point.y;
+
+				// Redraw window. This will call the draw method.
+				cview->RedrawWindow();
+			}
+			else if (this->editMode == Drawing::NewOvalMode) {
+
+				// Edit mode is NewRectangleMode. 
+				// This is because the user just selected the Figure->Rectangle menu
+
+				// Create a new rectangle.
+				MyOval * oval = new MyOval(point.x, point.y, point.x, point.y);
+
+				// Add to the list of figures
+				this->figures.push_back(oval);
+
+				// Now switch to select mode
+				this->editMode = SelectMode;
+
+				// Select only the last control point of the line 
+				// so dragging will modify this control point.
+				this->selectAll(false);
+				oval->selectLast(true);
 
 				// Update previous mouse coordinates
 				this->previousX = point.x;

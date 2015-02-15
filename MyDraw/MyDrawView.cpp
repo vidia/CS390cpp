@@ -26,6 +26,8 @@ BEGIN_MESSAGE_MAP(CMyDrawView, CView)
 	ON_WM_LBUTTONUP()
 	ON_WM_LBUTTONDOWN()
 	ON_COMMAND(ID_FIGURE_RECTANGLE, &CMyDrawView::OnFigureRectangle)
+	ON_COMMAND(ID_FIGURE_OVAL, &CMyDrawView::OnFigureOval)
+	ON_COMMAND(ID_EDIT_DELETE, &CMyDrawView::OnEditDelete)
 END_MESSAGE_MAP()
 
 // CMyDrawView construction/destruction
@@ -134,4 +136,19 @@ void CMyDrawView::OnFigureRectangle()
 {
 	CMyDrawDoc* pDoc = GetDocument();
 	pDoc->drawing.setEditMode(Drawing::NewRectangleMode);
+}
+
+
+void CMyDrawView::OnFigureOval()
+{
+	CMyDrawDoc* pDoc = GetDocument();
+	pDoc->drawing.setEditMode(Drawing::NewOvalMode);
+}
+
+
+void CMyDrawView::OnEditDelete()
+{
+	CMyDrawDoc* pDoc = GetDocument();
+	pDoc->drawing.deleteSelected(this); 
+	// TODO: Add your command handler code here
 }
