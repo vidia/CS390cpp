@@ -32,7 +32,7 @@ class Figure
 {
 public:
 	// Figure type. You may need to add more types here
-	enum FigureType { Line, Rectangle, Circle, Text };
+	enum FigureType { Line, Rectangle, Circle, Text, Group };
 
 protected:
 
@@ -50,7 +50,7 @@ public:
 
 	// Constructor and destructor
 	Figure(FigureType figureType, COLORREF color);
-	Figure(const Figure & figure); 
+	Figure(const Figure & ); 
 	~Figure(void);
 
 	// Get the list of all control points

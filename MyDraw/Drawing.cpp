@@ -25,6 +25,7 @@ MERCHANTABILITY AND FITNESS FOR ANY PARTICULAR PURPOSE.
 #include "Figure.h"
 #include "Rectangle.h"
 #include "MyOval.h"
+#include "Group.h"
 
 // Constructor/Destructor
 Drawing::Drawing(void)
@@ -105,6 +106,23 @@ Drawing::pasteCopyBuffer(CView * cview) {
 		Figure * copy = figure->clone(); 
 		figures.push_back(copy); 
 	}
+}
+
+void
+Drawing::groupSelected(CView * cview) {
+	vector<Figure *> togroup; 
+
+	std::vector<int>::size_type i = 0;
+	while (i < figures.size()) {
+		if (figures[i]->isSelected()) {
+			togroup.push_back(figures[i]->clone());
+		}
+		i++;
+	}
+
+	figures.push_back(new Group(togroup)); 
+
+	deleteSelected(cview);
 }
 
 // Call back when the mouse is pressed, moved, or released.

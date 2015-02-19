@@ -35,6 +35,7 @@ BEGIN_MESSAGE_MAP(CMyDrawView, CView)
 	ON_COMMAND(ID_EDIT_COPY, &CMyDrawView::OnEditCopy)
 	ON_COMMAND(ID_EDIT_PASTE, &CMyDrawView::OnEditPaste)
 	ON_COMMAND(ID_EDIT_CUT, &CMyDrawView::OnEditCut)
+	ON_COMMAND(ID_ACTIONS_GROUP, &CMyDrawView::OnActionsGroup)
 END_MESSAGE_MAP()
 
 // CMyDrawView construction/destruction
@@ -206,4 +207,11 @@ void CMyDrawView::OnEditCut()
 {
 	CMyDrawDoc* pDoc = GetDocument();
 	pDoc->drawing.cutSelected(this);
+}
+
+
+void CMyDrawView::OnActionsGroup()
+{
+	CMyDrawDoc* pDoc = GetDocument();
+	pDoc->drawing.groupSelected(this);
 }

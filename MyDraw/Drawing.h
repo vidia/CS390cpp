@@ -122,6 +122,6 @@ public:
 	void copySelected(CView * cview); 
 	void pasteCopyBuffer(CView * cview);
 	void cutSelected(CView * cview);
-
+	void groupSelected(CView * cview);
 };
 
