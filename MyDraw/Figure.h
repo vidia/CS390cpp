@@ -96,5 +96,7 @@ public:
 	static double distancePointToLine(double x0, double y0, double x1, double y1, double x2, double y2);
 
 	virtual Figure * clone() const = 0;
+
+	virtual void setColor(COLORREF color);
 };
 

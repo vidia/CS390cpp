@@ -94,6 +94,21 @@ Drawing::copySelected(CView * cview) {
 	}
 }
 
+void 
+Drawing::setCurrentColor(CView * cview, COLORREF color) {
+	currentColor = color; 
+	
+	std::vector<int>::size_type i = 0;
+	while (i < figures.size()) {
+		if (figures[i]->isSelected()) {
+			figures[i]->setColor(color);
+		}
+		i++;
+	}
+
+	cview->RedrawWindow();
+}
+
 void
 Drawing::cutSelected(CView * cview) {
 	copySelected(cview);

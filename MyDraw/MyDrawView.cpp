@@ -164,28 +164,28 @@ void CMyDrawView::OnEditDelete()
 void CMyDrawView::OnColorBlack()
 {
 	CMyDrawDoc* pDoc = GetDocument();
-	pDoc->drawing.currentColor = RGB(0, 0, 0);
+	pDoc->drawing.setCurrentColor(this, RGB(0, 0, 0));
 }
 
 
 void CMyDrawView::OnColorRed()
 {
 	CMyDrawDoc* pDoc = GetDocument();
-	pDoc->drawing.currentColor = RGB(255, 0, 0);
+	pDoc->drawing.setCurrentColor(this, RGB(255, 0, 0));
 }
 
 
 void CMyDrawView::OnColorGreen()
 {
 	CMyDrawDoc* pDoc = GetDocument();
-	pDoc->drawing.currentColor = RGB(0, 255, 0);
+	pDoc->drawing.setCurrentColor(this, RGB(0, 255, 0));
 }
 
 
 void CMyDrawView::OnColorBlue()
 {
 	CMyDrawDoc* pDoc = GetDocument();
-	pDoc->drawing.currentColor = RGB(0, 0, 255);
+	pDoc->drawing.setCurrentColor(this, RGB(0, 0, 255));
 }
 
 

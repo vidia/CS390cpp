@@ -185,3 +185,8 @@ double Figure::distancePointToLine(double x0, double y0, double x1, double y1, d
 
 	return dist;
 }
+
+void 
+Figure::setColor(COLORREF color) {
+	figureColor = color; 
+}

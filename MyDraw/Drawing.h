@@ -76,6 +76,8 @@ public:
 	Drawing(void);
 	~Drawing(void);
 
+	void setCurrentColor(CView * cview, COLORREF color); 
+
 	// Draw the figures in the Drawing.
 	// Called by the draw method in MyDrawView
 	void draw(CDC* pDC);

@@ -10,7 +10,6 @@ private:
 public:
 	// Constructor/destructor for a line
 	Group(vector<Figure *> figures);
-	//Group(const Group & group);
 	~Group(void);
 
 	// Draw a line using graphic context pDC
@@ -24,5 +23,6 @@ public:
 	Group * clone() const;
 
 	void dragSelectedControlPoints(int, int); 
+	void setColor(COLORREF color); 
 };
 
