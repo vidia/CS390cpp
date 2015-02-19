@@ -56,6 +56,10 @@ public:
 	afx_msg void OnEditPaste();
 	afx_msg void OnEditCut();
 	afx_msg void OnActionsGroup();
+	afx_msg void OnActionsUngroup();
+	afx_msg void OnActionsSendtoback();
+	afx_msg void OnActionsBringtofront();
+	afx_msg void OnEditUndo();
 };
 
 #ifndef _DEBUG  // debug version in MyDrawView.cpp

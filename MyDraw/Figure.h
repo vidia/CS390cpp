@@ -35,16 +35,15 @@ public:
 	enum FigureType { Line, Rectangle, Circle, Text, Group };
 
 protected:
-
-	// Type of this figure.
-	FigureType figureType;
-
 	// List of all control point for this figure.
 	vector<ControlPoint *> controlPoints;
 
 	COLORREF figureColor; 
 
 public:
+
+	// Type of this figure.
+	FigureType figureType;
 
 	static const double smallDistance;
 

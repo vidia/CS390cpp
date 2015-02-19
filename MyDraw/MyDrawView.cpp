@@ -36,6 +36,10 @@ BEGIN_MESSAGE_MAP(CMyDrawView, CView)
 	ON_COMMAND(ID_EDIT_PASTE, &CMyDrawView::OnEditPaste)
 	ON_COMMAND(ID_EDIT_CUT, &CMyDrawView::OnEditCut)
 	ON_COMMAND(ID_ACTIONS_GROUP, &CMyDrawView::OnActionsGroup)
+	ON_COMMAND(ID_ACTIONS_UNGROUP, &CMyDrawView::OnActionsUngroup)
+	ON_COMMAND(ID_ACTIONS_SENDTOBACK, &CMyDrawView::OnActionsSendtoback)
+	ON_COMMAND(ID_ACTIONS_BRINGTOFRONT, &CMyDrawView::OnActionsBringtofront)
+	ON_COMMAND(ID_EDIT_UNDO, &CMyDrawView::OnEditUndo)
 END_MESSAGE_MAP()
 
 // CMyDrawView construction/destruction
@@ -214,4 +218,32 @@ void CMyDrawView::OnActionsGroup()
 {
 	CMyDrawDoc* pDoc = GetDocument();
 	pDoc->drawing.groupSelected(this);
+}
+
+
+void CMyDrawView::OnActionsUngroup()
+{
+	CMyDrawDoc* pDoc = GetDocument();
+	pDoc->drawing.ungroupSelected(this);
+}
+
+
+void CMyDrawView::OnActionsSendtoback()
+{
+	CMyDrawDoc* pDoc = GetDocument();
+	pDoc->drawing.sendSelectionToBack(this);
+}
+
+
+void CMyDrawView::OnActionsBringtofront()
+{
+	CMyDrawDoc* pDoc = GetDocument();
+	pDoc->drawing.bringSelectionToFront(this);
+}
+
+
+void CMyDrawView::OnEditUndo()
+{
+	CMyDrawDoc* pDoc = GetDocument();
+	pDoc->drawing.undo(this);
 }

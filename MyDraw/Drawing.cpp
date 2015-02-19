@@ -79,6 +79,7 @@ Drawing::deleteSelected(CView * cview) {
 
 	// Redraw window. This will call the draw method.
 	cview->RedrawWindow();
+	pushUndoStack();
 }
 
 void
@@ -88,7 +89,7 @@ Drawing::copySelected(CView * cview) {
 	std::vector<int>::size_type i = 0;
 	while (i < figures.size()) {
 		if (figures[i]->isSelected()) {
-			copyBuffer.push_back(figures[i]);
+			copyBuffer.push_back(figures[i]->clone());
 		}
 		i++;
 	}
@@ -98,15 +99,20 @@ void
 Drawing::setCurrentColor(CView * cview, COLORREF color) {
 	currentColor = color; 
 	
+	bool changed = false; 
 	std::vector<int>::size_type i = 0;
 	while (i < figures.size()) {
 		if (figures[i]->isSelected()) {
 			figures[i]->setColor(color);
+			changed = true; 
 		}
 		i++;
 	}
 
-	cview->RedrawWindow();
+	if (changed) {
+		cview->RedrawWindow();
+		pushUndoStack(); 
+	}
 }
 
 void
@@ -117,9 +123,23 @@ Drawing::cutSelected(CView * cview) {
 
 void
 Drawing::pasteCopyBuffer(CView * cview) {
+
+	selectAll(false); 
+
+	bool changed = false; 
 	for each (Figure * figure in copyBuffer) {
+		changed = true; 
 		Figure * copy = figure->clone(); 
+
+		copy->select(true); 
+		copy->dragSelectedControlPoints(10, 10);
+
 		figures.push_back(copy); 
+	}
+
+	if (changed) {
+		pushUndoStack();
+		cview->RedrawWindow();
 	}
 }
 
@@ -138,6 +158,112 @@ Drawing::groupSelected(CView * cview) {
 	figures.push_back(new Group(togroup)); 
 
 	deleteSelected(cview);
+}
+
+void
+Drawing::ungroupSelected(CView * cview) {
+	vector<Figure *> ungrouped; 
+
+	bool changed = false;
+	std::vector<int>::size_type i = 0;
+	while (i < figures.size()) {
+		if (figures[i]->isSelected()) {
+			if (figures[i]->figureType == Figure::FigureType::Group)
+			{
+				changed = true; 
+				Group * group = dynamic_cast<Group*>(figures[i]); 
+				for each (Figure * figure in group->getFigures())
+				{
+					ungrouped.push_back(figure->clone()); 
+				}
+
+				Figure * f = figures[i];
+				figures.erase(figures.begin() + i);
+				delete f;
+				i--; 
+			}
+		}
+		i++;
+	}
+
+	for each (Figure * figure in ungrouped) {
+		figures.push_back(figure); 
+	}
+
+	if (changed) {
+		pushUndoStack();
+		cview->RedrawWindow();
+	}
+}
+
+void 
+Drawing::bringSelectionToFront(CView * cview) {
+	vector<Figure *> tomove;
+
+	bool changed = false; 
+	std::vector<int>::size_type i = 0;
+	while (i < figures.size()) {
+		if (figures[i]->isSelected()) {
+			changed = true; 
+			tomove.push_back(figures[i]);
+
+			figures.erase(figures.begin() + i);
+			i--;
+		}
+		i++;
+	}
+
+	figures.insert(figures.end(), tomove.begin(), tomove.end());
+
+	if (changed) {
+		pushUndoStack();
+		cview->RedrawWindow(); 
+	}
+}
+
+void
+Drawing::sendSelectionToBack(CView * cview) {
+	vector<Figure *> tomove;
+
+	bool changed = false;
+	std::vector<int>::size_type i = 0;
+	while (i < figures.size()) {
+		if (figures[i]->isSelected()) {
+			changed = true; 
+			tomove.push_back(figures[i]);
+
+			figures.erase(figures.begin() + i);
+			i--;
+		}
+		i++;
+	}
+
+	figures.insert(figures.begin(), tomove.begin(), tomove.end()); 
+
+	if (changed) {
+		cview->RedrawWindow();
+		pushUndoStack();
+	}
+}
+
+void
+Drawing::undo(CView * cview) {
+	if (undoStack.size()) {
+		figures = undoStack[undoStack.size() - 1];
+		undoStack.pop_back();
+		//TODO: Delete figs in undo stack. 
+		cview->RedrawWindow();
+	}
+}
+
+void
+Drawing::pushUndoStack() {
+	vector<Figure*> curState; 
+	for each (Figure * figure in figures) {
+		Figure * clone = figure->clone();
+		curState.push_back(clone); 
+	}
+	undoStack.push_back(curState); 
 }
 
 // Call back when the mouse is pressed, moved, or released.
@@ -183,6 +309,8 @@ Drawing::OnMouse(CView * cview, int nFlags, CPoint point) {
 
 				// Redraw window. This will clal the draw method.
 				cview->RedrawWindow();
+
+				pushUndoStack();
 			}
 			else if (this->editMode == Drawing::NewRectangleMode) {
 
@@ -209,6 +337,8 @@ Drawing::OnMouse(CView * cview, int nFlags, CPoint point) {
 
 				// Redraw window. This will call the draw method.
 				cview->RedrawWindow();
+
+				pushUndoStack();
 			}
 			else if (this->editMode == Drawing::NewOvalMode) {
 
@@ -235,6 +365,8 @@ Drawing::OnMouse(CView * cview, int nFlags, CPoint point) {
 
 				// Redraw window. This will call the draw method.
 				cview->RedrawWindow();
+
+				pushUndoStack();
 			}
 			else if (this->editMode == Drawing::SelectMode) {
 
@@ -337,6 +469,14 @@ Drawing::OnMouse(CView * cview, int nFlags, CPoint point) {
 				// Erase selection rectangle
 				this->disableSelectionRectangle();
 			}
+
+			if (this->previousX == point.x && this->previousY == point.y) {
+				//just clicked. 
+			}
+			else {
+				pushUndoStack(); 
+			}
+
 			cview->RedrawWindow();
 		}
 

@@ -69,6 +69,10 @@ private:
 	// Coordinates of the selection rectangle.
 	int selectionRectangleX0, selectionRectangleY0, selectionRectangleX1, selectionRectangleY1;
 
+	void pushUndoStack(); 
+
+	vector< vector<Figure *> > undoStack; 
+
 public:
 	COLORREF currentColor;
 
@@ -125,5 +129,11 @@ public:
 	void pasteCopyBuffer(CView * cview);
 	void cutSelected(CView * cview);
 	void groupSelected(CView * cview);
+	void ungroupSelected(CView * cview);
+
+	void sendSelectionToBack(CView * cview); 
+	void bringSelectionToFront(CView * cview); 
+
+	void undo(CView * cview); 
 };
 

@@ -3,7 +3,7 @@
 
 
 Group::Group(vector<Figure *> figs)
-	:Figure(Figure::FigureType::Line, RGB(0,0,0))
+	:Figure(Figure::FigureType::Group, RGB(0,0,0))
 {
 	figures = figs;
 

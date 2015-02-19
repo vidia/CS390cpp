@@ -185,12 +185,16 @@ BEGIN
         MENUITEM "Red",                         ID_COLOR_RED
         MENUITEM "Green",                       ID_COLOR_GREEN
         MENUITEM "Blue",                        ID_COLOR_BLUE
+        MENUITEM SEPARATOR
         MENUITEM "Custom",                      ID_COLOR_CUSTOM
     END
     POPUP "Actions"
     BEGIN
         MENUITEM "Group",                       ID_ACTIONS_GROUP
         MENUITEM "Ungroup",                     ID_ACTIONS_UNGROUP
+        MENUITEM SEPARATOR
+        MENUITEM "Send to Back",                ID_ACTIONS_SENDTOBACK
+        MENUITEM "Bring to Front",              ID_ACTIONS_BRINGTOFRONT
     END
 END
 
