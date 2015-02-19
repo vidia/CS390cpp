@@ -42,10 +42,13 @@ public:
 	// Mouse Button Mode.
 	enum MouseMode { NoButtonPressed, ButtonPressed };
 
+
 private:
 
 	// This is the list of all the figures in the drawing.
 	vector<Figure *> figures;
+
+	vector<Figure *> copyBuffer; 
 
 	// Current Edit mode. When the new line is selected in the Figure menu, the NewLineMode is set here.
 	EditMode editMode;
@@ -67,6 +70,8 @@ private:
 	int selectionRectangleX0, selectionRectangleY0, selectionRectangleX1, selectionRectangleY1;
 
 public:
+	COLORREF currentColor;
+
 	// Constructor/Destructor
 	Drawing(void);
 	~Drawing(void);
@@ -113,5 +118,10 @@ public:
 	bool isAnySelectedFigureCloseTo(int x, int y);
 
 	void deleteSelected(CView * cview);
+
+	void copySelected(CView * cview); 
+	void pasteCopyBuffer(CView * cview);
+	void cutSelected(CView * cview);
+
 };
 

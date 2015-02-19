@@ -48,6 +48,13 @@ public:
 	afx_msg void OnFigureRectangle();
 	afx_msg void OnFigureOval();
 	afx_msg void OnEditDelete();
+	afx_msg void OnColorBlack();
+	afx_msg void OnColorRed();
+	afx_msg void OnColorGreen();
+	afx_msg void OnColorBlue();
+	afx_msg void OnEditCopy();
+	afx_msg void OnEditPaste();
+	afx_msg void OnEditCut();
 };
 
 #ifndef _DEBUG  // debug version in MyDrawView.cpp

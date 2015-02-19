@@ -179,6 +179,19 @@ BEGIN
         MENUITEM "Rectangle",                   ID_FIGURE_RECTANGLE
         MENUITEM "Oval",                        ID_FIGURE_OVAL
     END
+    POPUP "Color"
+    BEGIN
+        MENUITEM "Black",                       ID_COLOR_BLACK
+        MENUITEM "Red",                         ID_COLOR_RED
+        MENUITEM "Green",                       ID_COLOR_GREEN
+        MENUITEM "Blue",                        ID_COLOR_BLUE
+        MENUITEM "Custom",                      ID_COLOR_CUSTOM
+    END
+    POPUP "Actions"
+    BEGIN
+        MENUITEM "Group",                       ID_ACTIONS_GROUP
+        MENUITEM "Ungroup",                     ID_ACTIONS_UNGROUP
+    END
 END
 
 

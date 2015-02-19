@@ -8,7 +8,7 @@ class Line : public Figure
 {
 public:
 	// Constructor/destructor for a line
-	Line(int x0, int y0, int x1, int y1);
+	Line(COLORREF color, int x0, int y0, int x1, int y1);
 	~Line(void);
 
 	// Draw a line using graphic context pDC
@@ -19,5 +19,7 @@ public:
 
 	// Return true if line is close to coordinates (x,y)
 	bool isCloseTo(int x, int y);
+
+	Line * clone() const; 
 };
 

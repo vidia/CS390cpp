@@ -80,6 +80,33 @@ Drawing::deleteSelected(CView * cview) {
 	cview->RedrawWindow();
 }
 
+void
+Drawing::copySelected(CView * cview) {
+	copyBuffer.clear(); 
+
+	std::vector<int>::size_type i = 0;
+	while (i < figures.size()) {
+		if (figures[i]->isSelected()) {
+			copyBuffer.push_back(figures[i]);
+		}
+		i++;
+	}
+}
+
+void
+Drawing::cutSelected(CView * cview) {
+	copySelected(cview);
+	deleteSelected(cview);
+}
+
+void
+Drawing::pasteCopyBuffer(CView * cview) {
+	for each (Figure * figure in copyBuffer) {
+		Figure * copy = figure->clone(); 
+		figures.push_back(copy); 
+	}
+}
+
 // Call back when the mouse is pressed, moved, or released.
 // It is called by the mouse call backs in MyDrawView
 void 
@@ -104,7 +131,7 @@ Drawing::OnMouse(CView * cview, int nFlags, CPoint point) {
 				// This is because the user just selected the Figure->Line menu
 
 				// Create a new line.
-				Line * line = new Line(point.x, point.y, point.x, point.y);
+				Line * line = new Line(this->currentColor, point.x, point.y, point.x, point.y);
 
 				// Add to the list of figures
 				this->figures.push_back(line);
@@ -130,7 +157,7 @@ Drawing::OnMouse(CView * cview, int nFlags, CPoint point) {
 				// This is because the user just selected the Figure->Rectangle menu
 
 				// Create a new rectangle.
-				MyRectangle * rect = new MyRectangle(point.x, point.y, point.x, point.y);
+				MyRectangle * rect = new MyRectangle(this->currentColor, point.x, point.y, point.x, point.y);
 
 				// Add to the list of figures
 				this->figures.push_back(rect);
@@ -156,7 +183,7 @@ Drawing::OnMouse(CView * cview, int nFlags, CPoint point) {
 				// This is because the user just selected the Figure->Rectangle menu
 
 				// Create a new rectangle.
-				MyOval * oval = new MyOval(point.x, point.y, point.x, point.y);
+				MyOval * oval = new MyOval(this->currentColor, point.x, point.y, point.x, point.y);
 
 				// Add to the list of figures
 				this->figures.push_back(oval);

@@ -28,6 +28,13 @@ BEGIN_MESSAGE_MAP(CMyDrawView, CView)
 	ON_COMMAND(ID_FIGURE_RECTANGLE, &CMyDrawView::OnFigureRectangle)
 	ON_COMMAND(ID_FIGURE_OVAL, &CMyDrawView::OnFigureOval)
 	ON_COMMAND(ID_EDIT_DELETE, &CMyDrawView::OnEditDelete)
+	ON_COMMAND(ID_COLOR_BLACK, &CMyDrawView::OnColorBlack)
+	ON_COMMAND(ID_COLOR_RED, &CMyDrawView::OnColorRed)
+	ON_COMMAND(ID_COLOR_GREEN, &CMyDrawView::OnColorGreen)
+	ON_COMMAND(ID_COLOR_BLUE, &CMyDrawView::OnColorBlue)
+	ON_COMMAND(ID_EDIT_COPY, &CMyDrawView::OnEditCopy)
+	ON_COMMAND(ID_EDIT_PASTE, &CMyDrawView::OnEditPaste)
+	ON_COMMAND(ID_EDIT_CUT, &CMyDrawView::OnEditCut)
 END_MESSAGE_MAP()
 
 // CMyDrawView construction/destruction
@@ -150,5 +157,53 @@ void CMyDrawView::OnEditDelete()
 {
 	CMyDrawDoc* pDoc = GetDocument();
 	pDoc->drawing.deleteSelected(this); 
-	// TODO: Add your command handler code here
+}
+
+
+void CMyDrawView::OnColorBlack()
+{
+	CMyDrawDoc* pDoc = GetDocument();
+	pDoc->drawing.currentColor = RGB(0, 0, 0);
+}
+
+
+void CMyDrawView::OnColorRed()
+{
+	CMyDrawDoc* pDoc = GetDocument();
+	pDoc->drawing.currentColor = RGB(255, 0, 0);
+}
+
+
+void CMyDrawView::OnColorGreen()
+{
+	CMyDrawDoc* pDoc = GetDocument();
+	pDoc->drawing.currentColor = RGB(0, 255, 0);
+}
+
+
+void CMyDrawView::OnColorBlue()
+{
+	CMyDrawDoc* pDoc = GetDocument();
+	pDoc->drawing.currentColor = RGB(0, 0, 255);
+}
+
+
+void CMyDrawView::OnEditCopy()
+{
+	CMyDrawDoc* pDoc = GetDocument();
+	pDoc->drawing.copySelected(this);
+}
+
+
+void CMyDrawView::OnEditPaste()
+{
+	CMyDrawDoc* pDoc = GetDocument();
+	pDoc->drawing.pasteCopyBuffer(this);
+}
+
+
+void CMyDrawView::OnEditCut()
+{
+	CMyDrawDoc* pDoc = GetDocument();
+	pDoc->drawing.cutSelected(this);
 }

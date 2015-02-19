@@ -1,8 +1,8 @@
 #include "StdAfx.h"
 #include "Rectangle.h"
 
-MyRectangle::MyRectangle(int x0, int y0, int x1, int y1)
-	:Figure(Figure::FigureType::Rectangle)
+MyRectangle::MyRectangle(COLORREF color, int x0, int y0, int x1, int y1)
+	:Figure(Figure::FigureType::Rectangle, color)
 {
 	controlPoints.push_back(new ControlPoint(this, x0, y0));
 	controlPoints.push_back(new ControlPoint(this, x1, y1));
@@ -25,7 +25,7 @@ void MyRectangle::draw(CDC* pDC)
 	int maxY = (p0->getY()<p1->getY()) ? p1->getY() : p0->getY();
 
 	// Draw MyRectangle
-	CPen pen(PS_SOLID, 0, RGB(0, 0, 0));
+	CPen pen(PS_SOLID, 0, this->figureColor);
 	CPen* pOldPen = pDC->SelectObject(&pen);
 	pDC->MoveTo(minX, minY);
 	pDC->LineTo(maxX, minY);
@@ -55,4 +55,9 @@ bool MyRectangle::isCloseTo(int x, int y)
 	}
 
 	return false;
+}
+
+
+MyRectangle * MyRectangle::clone() const {
+	return new MyRectangle(*this);
 }

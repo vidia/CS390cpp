@@ -28,9 +28,21 @@ MERCHANTABILITY AND FITNESS FOR ANY PARTICULAR PURPOSE.
 const double Figure::smallDistance = 10;
 
 // Constructor and destructor
-Figure::Figure(FigureType figureType) 
+Figure::Figure(FigureType figureType, COLORREF color) 
 {
 	this->figureType = figureType;
+	this->figureColor = color; 
+}
+
+Figure::Figure(const Figure& other) {
+	figureType = other.figureType; 
+	figureColor = other.figureColor; 
+
+	for (int i = 0; i < other.controlPoints.size(); i++) {
+		ControlPoint * cp = other.controlPoints[i]; 
+		ControlPoint * copy = new ControlPoint(this, cp->getX(), cp->getY()); 
+		controlPoints.push_back(copy); 
+	}
 }
 
 Figure::~Figure(void)

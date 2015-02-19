@@ -42,12 +42,15 @@ protected:
 	// List of all control point for this figure.
 	vector<ControlPoint *> controlPoints;
 
+	COLORREF figureColor; 
+
 public:
 
 	static const double smallDistance;
 
 	// Constructor and destructor
-	Figure(FigureType figureType);
+	Figure(FigureType figureType, COLORREF color);
+	Figure(const Figure & figure); 
 	~Figure(void);
 
 	// Get the list of all control points
@@ -91,5 +94,7 @@ public:
 	// Distance of point (x0,y0) to the line between (x1,y1) and (x2,y2).
 	// If the perpendicular distance is beyond the line segment, it returns a large distance.
 	static double distancePointToLine(double x0, double y0, double x1, double y1, double x2, double y2);
+
+	virtual Figure * clone() const = 0;
 };
 

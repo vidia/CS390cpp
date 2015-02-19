@@ -23,8 +23,8 @@ MERCHANTABILITY AND FITNESS FOR ANY PARTICULAR PURPOSE.
 #include <math.h>
 
 // Constructor/destructor for a line
-Line::Line(int x0, int y0, int x1, int y1)
-:Figure(Figure::FigureType::Line)
+Line::Line(COLORREF color, int x0, int y0, int x1, int y1)
+:Figure(Figure::FigureType::Line, color)
 {
 	controlPoints.push_back(new ControlPoint(this, x0,y0));
 	controlPoints.push_back(new ControlPoint(this, x1,y1));
@@ -39,7 +39,7 @@ void Line::draw(CDC* pDC) {
 	ControlPoint * p0 = controlPoints.at(0);
 	ControlPoint * p1 = controlPoints.at(1);
 
-	CPen pen( PS_SOLID, 0, RGB( 0, 0, 0 ) );
+	CPen pen( PS_SOLID, 0, this->figureColor );
 	CPen* pOldPen = pDC->SelectObject( &pen );
 	pDC->MoveTo(p0->getX(), p0->getY());
 	pDC->LineTo(p1->getX(), p1->getY());
@@ -61,3 +61,6 @@ bool Line::isCloseTo(int x, int y)
 	return false;
 }
 
+Line * Line::clone() const {
+	return new Line( * this ); 
+}

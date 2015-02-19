@@ -1,8 +1,8 @@
 #include "StdAfx.h"
 #include "MyOval.h"
 
-MyOval::MyOval(int x0, int y0, int x1, int y1)
-	:Figure(Figure::FigureType::Rectangle)
+MyOval::MyOval(COLORREF color, int x0, int y0, int x1, int y1)
+	:Figure(Figure::FigureType::Rectangle, color)
 {
 	controlPoints.push_back(new ControlPoint(this, x0, y0));
 	controlPoints.push_back(new ControlPoint(this, x1, y1));
@@ -29,7 +29,7 @@ void MyOval::draw(CDC* pDC)
 	int cx = (maxX + minX) / 2; 
 	int cy = (maxY + minY) / 2; 
 
-	CPen pen(PS_SOLID, 0, RGB(0, 0, 0));
+	CPen pen(PS_SOLID, 0, this->figureColor);
 	CPen* pOldPen = pDC->SelectObject(&pen);
 	pDC->MoveTo((maxX-minX)/2 + minX, minY);
 
@@ -76,4 +76,8 @@ bool MyOval::isCloseTo(int x, int y)
 	}
 
 	return false;
+}
+
+MyOval * MyOval::clone() const {
+	return new MyOval(*this); 
 }
