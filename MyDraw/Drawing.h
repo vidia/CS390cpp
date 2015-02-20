@@ -33,11 +33,11 @@ using namespace std;
 // This is the main class for the drawing editor.
 // It also represents the whole drawing. 
 // A Drawing is a group of figures. 
-class Drawing
+class Drawing : public CObject
 {
 public:
 	// Mode of the Drawing editor.
-	enum EditMode { SelectMode, NewLineMode, NewRectangleMode, NewOvalMode };
+	enum EditMode { SelectMode, NewLineMode, NewRectangleMode, NewOvalMode, NewTextMode, NewImageMode };
 
 	// Mouse Button Mode.
 	enum MouseMode { NoButtonPressed, ButtonPressed };
@@ -65,7 +65,6 @@ private:
 	// Enables or disables the selection rectangle. 
 	// If disabled, the draw method will not draw the selection rectangle.
 	bool selectionRectangleEnabled;
-
 
 	// Coordinates of the selection rectangle.
 	int selectionRectangleX0, selectionRectangleY0, selectionRectangleX1, selectionRectangleY1;
@@ -137,6 +136,6 @@ public:
 
 	void undo(CView * cview); 
 
-	void Serialize(CArchive& ar); 
+	void Serialize(CArchive& archive);
 };
 

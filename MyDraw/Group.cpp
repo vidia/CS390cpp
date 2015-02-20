@@ -3,6 +3,7 @@
 #include "MyOval.h"
 #include "Rectangle.h"
 #include "Line.h"
+IMPLEMENT_SERIAL(Group, Figure, 1);
 
 
 Group::Group(vector<Figure *> figs)
@@ -40,12 +41,16 @@ Group::Group(vector<Figure *> figs)
 	controlPoints.push_back(new ControlPoint(this, minx, miny));
 	controlPoints.push_back(new ControlPoint(this, maxx, maxy));
 }
-
+Group::Group()
+{
+}
 Group::~Group()
 {
-	while (figures.size()) {
-		Figure * fig = figures[figures.size() - 1]; 
-		delete fig; 
+	std::vector<int>::size_type i = 0;
+	while (i < figures.size()) {
+		Figure * f = figures[i];
+		figures.erase(figures.begin() + i);
+		delete f;
 	}
 }
 
@@ -115,6 +120,14 @@ void Group::dragSelectedControlPoints(int dx, int dy)
 	}
 	else if (count == 1) {
 
+		ControlPoint * selected; 
+		for each (ControlPoint * cp in controlPoints) {
+			if (cp->isSelected()) {
+				selected = cp; 
+				break; 
+			}
+		}
+
 		float width = abs(controlPoints[0]->getX() - controlPoints[1]->getX());
 		float height = abs(controlPoints[0]->getY() - controlPoints[1]->getY());
 
@@ -145,4 +158,62 @@ void Group::dragSelectedControlPoints(int dx, int dy)
 	When translating, only the group cp's need updating. When drawing refer to those
 	cp's for a percentage and draw with the scale from the figure's new points. 
 	If possible, do not overwrite the grouped figure's coords and calculate on the fly.*/
+}
+
+
+void Group::Serialize(CArchive& ar) {
+
+	if (ar.IsStoring())
+	{
+		// TODO: add storing code here
+		ar << figureColor;
+		ar << figureType;
+
+		ar << figControlPoints.size();
+		for each (ControlPoint * cp in figControlPoints) {
+			ar << cp->getX() << cp->getY();
+		}
+
+		ar << controlPoints.size();
+		for each (ControlPoint * cp in controlPoints) {
+			ar << cp->getX() << cp->getY();
+		}
+
+		ar << figures.size(); 
+		for each (Figure * figure in figures) {
+			ar << figure; 
+		}
+	}
+	else
+	{
+		// TODO: add loading code here
+		ar >> figureColor;
+
+		int foo;
+		ar >> foo;
+		FigureType type = (FigureType)foo;
+
+		int size;
+		ar >> size;
+		for (int i = 0; i < size; i++) {
+			int x, y;
+			ar >> x >> y;
+			figControlPoints.push_back(new ControlPoint(this, x, y));
+		}
+
+		ar >> size;
+		for (int i = 0; i < size; i++) {
+			int x, y;
+			ar >> x >> y;
+			controlPoints.push_back(new ControlPoint(this, x, y));
+		}
+
+		int num;
+		ar >> num;
+		for (int i = 0; i < num; i++) {
+			Figure * figure;
+			ar >> figure;
+			figures.push_back(figure);
+		}
+	}
 }

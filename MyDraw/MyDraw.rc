@@ -140,6 +140,8 @@ BEGIN
         MENUITEM "&Save\tCtrl+S",               ID_FILE_SAVE
         MENUITEM "Save &As...",                 ID_FILE_SAVE_AS
         MENUITEM SEPARATOR
+        MENUITEM "Export to Image",             ID_FILE_EXPORT
+        MENUITEM SEPARATOR
         MENUITEM "&Print...\tCtrl+P",           ID_FILE_PRINT
         MENUITEM "Print Pre&view",              ID_FILE_PRINT_PREVIEW
         MENUITEM "P&rint Setup...",             ID_FILE_PRINT_SETUP
@@ -179,6 +181,7 @@ BEGIN
         MENUITEM "Rectangle",                   ID_FIGURE_RECTANGLE
         MENUITEM "Oval",                        ID_FIGURE_OVAL
         MENUITEM "Text",                        ID_FIGURE_TEXT
+        MENUITEM "Image",                       ID_FIGURE_IMAGE
     END
     POPUP "Color"
     BEGIN
@@ -255,6 +258,16 @@ FONT 8, "MS Shell Dlg", 400, 0, 0x0
 BEGIN
 END
 
+IDD_DIALOG2 DIALOGEX 0, 0, 319, 28
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Dialog"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,198,7,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,262,7,50,14
+    EDITTEXT        IDC_EDIT1,17,7,146,14,ES_AUTOHSCROLL
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -325,6 +338,14 @@ BEGIN
         RIGHTMARGIN, 178
         TOPMARGIN, 7
         BOTTOMMARGIN, 86
+    END
+
+    IDD_DIALOG2, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 312
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 21
     END
 END
 #endif    // APSTUDIO_INVOKED

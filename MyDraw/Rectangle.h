@@ -9,6 +9,7 @@ class MyRectangle : public Figure
 public:
 	// Constructor/destructor for a Rectangle
 	MyRectangle(COLORREF color, int x0, int y0, int x1, int y1);
+	MyRectangle(); 
 	~MyRectangle(void);
 
 	// Draw a line using graphic context pDC
@@ -21,5 +22,9 @@ public:
 	bool isCloseTo(int x, int y);
 
 	MyRectangle * clone() const; 
+
+
+	void Serialize(CArchive& archive);
+	DECLARE_SERIAL(MyRectangle);
 };
 

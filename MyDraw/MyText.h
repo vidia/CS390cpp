@@ -1,16 +1,15 @@
 #pragma once
-
 #include "Figure.h"
-
-// Subclass for a Oval. 
-// Inherits most methods from Figure. 
-class MyOval : public Figure
+class MyText :
+	public Figure
 {
+private: 
+	CString text; 
 public:
-	// Constructor/destructor for a Rectangle
-	MyOval(COLORREF color, int x0, int y0, int x1, int y1);
-	MyOval(); 
-	~MyOval(void);
+	MyText(COLORREF color, CString string, int x, int y); 
+	MyText();
+	MyText(const MyText &);
+	~MyText(void);
 
 	// Draw a line using graphic context pDC
 	void draw(CDC* pDC);
@@ -21,10 +20,11 @@ public:
 	// Return true if line is close to coordinates (x,y)
 	bool isCloseTo(int x, int y);
 
-	MyOval * clone() const; 
+	MyText * clone() const;
 
 
 	void Serialize(CArchive& archive);
-
-	DECLARE_SERIAL(MyOval); 
+	DECLARE_SERIAL(MyText);
 };
+
+

@@ -22,6 +22,8 @@ MERCHANTABILITY AND FITNESS FOR ANY PARTICULAR PURPOSE.
 #include "Line.h"
 #include <math.h>
 
+IMPLEMENT_SERIAL(Line, Figure, 1);
+
 // Constructor/destructor for a line
 Line::Line(COLORREF color, int x0, int y0, int x1, int y1)
 :Figure(Figure::FigureType::Line, color)
@@ -34,6 +36,9 @@ Line::~Line(void)
 {
 }
 
+Line::Line(void)
+{
+}
 // Draw a line using graphic context pDC
 void Line::draw(CDC* pDC) {
 	ControlPoint * p0 = controlPoints.at(0);
@@ -63,4 +68,37 @@ bool Line::isCloseTo(int x, int y)
 
 Line * Line::clone() const {
 	return new Line( * this ); 
+}
+
+
+void Line::Serialize(CArchive& ar) {
+
+	if (ar.IsStoring())
+	{
+		// TODO: add storing code here
+		ar << figureColor;
+		ar << figureType;
+
+		ar << controlPoints.size();
+		for each (ControlPoint * cp in controlPoints) {
+			ar << cp->getX() << cp->getY();
+		}
+	}
+	else
+	{
+		// TODO: add loading code here
+		ar >> figureColor;
+
+		int foo;
+		ar >> foo;
+		FigureType type = (FigureType)foo;
+
+		int size;
+		ar >> size;
+		for (int i = 0; i < size; i++) {
+			int x, y;
+			ar >> x >> y;
+			controlPoints.push_back(new ControlPoint(this, x, y));
+		}
+	}
 }

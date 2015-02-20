@@ -1,47 +1,31 @@
-#include "StdAfx.h"
-#include "Rectangle.h"
+#include "stdafx.h"
+#include "MyText.h"
 
-IMPLEMENT_SERIAL(MyRectangle, Figure, 1);
+IMPLEMENT_SERIAL(MyText, Figure, 1);
 
-
-MyRectangle::MyRectangle(COLORREF color, int x0, int y0, int x1, int y1)
-	:Figure(Figure::FigureType::Rectangle, color)
+MyText::MyText(COLORREF color, CString string, int x, int y) : Figure(FigureType::Text, color)
 {
-	controlPoints.push_back(new ControlPoint(this, x0, y0));
-	controlPoints.push_back(new ControlPoint(this, x1, y1));
+	text = string; 
+	controlPoints.push_back(new ControlPoint(this, x, y)); 
+	controlPoints.push_back(new ControlPoint(this, x +10, y +10));
 }
 
-MyRectangle::~MyRectangle(void)
-{
-}
-MyRectangle::MyRectangle(void)
+
+MyText::MyText()
 {
 }
 
-// Draw a MyRectangle using graphic context pDC
-void MyRectangle::draw(CDC* pDC)
+MyText::MyText(const MyText & other) : Figure(other)
 {
-	ControlPoint * p0 = controlPoints.at(0);
-	ControlPoint * p1 = controlPoints.at(1);
-
-	// Find minx, miny, maxx, maxy
-	int minX = (p0->getX()<p1->getX()) ? p0->getX() : p1->getX();
-	int minY = (p0->getY()<p1->getY()) ? p0->getY() : p1->getY();
-	int maxX = (p0->getX()<p1->getX()) ? p1->getX() : p0->getX();
-	int maxY = (p0->getY()<p1->getY()) ? p1->getY() : p0->getY();
-
-	// Draw MyRectangle
-	CPen pen(PS_SOLID, 0, this->figureColor);
-	CPen* pOldPen = pDC->SelectObject(&pen);
-	pDC->MoveTo(minX, minY);
-	pDC->LineTo(maxX, minY);
-	pDC->LineTo(maxX, maxY);
-	pDC->LineTo(minX, maxY);
-	pDC->LineTo(minX, minY);
+	text = other.text; 
 }
 
-// Return true if MyRectangle is close to coordinates (x,y)
-bool MyRectangle::isCloseTo(int x, int y)
+
+MyText::~MyText()
+{
+}
+
+bool MyText::isCloseTo(int x, int y)
 {
 	ControlPoint * p0 = controlPoints.at(0);
 	ControlPoint * p1 = controlPoints.at(1);
@@ -63,14 +47,19 @@ bool MyRectangle::isCloseTo(int x, int y)
 	return false;
 }
 
-
-MyRectangle * MyRectangle::clone() const {
-	return new MyRectangle(*this);
+void MyText::draw(CDC* pDC) {
+	CRect rect = new CRect( *new CPoint(controlPoints[0]->getX(), controlPoints[0]->getY()), *new CPoint(controlPoints[1]->getX(), controlPoints[1]->getY())); 
+	pDC->SetTextColor(figureColor); 
+	pDC->DrawText(text, rect, NULL);
 }
 
+MyText * MyText::clone() const {
+	return new MyText(*this); 
+}
 
-void MyRectangle::Serialize(CArchive& ar) {
-
+void 
+MyText::Serialize(CArchive & ar) {
+	
 	if (ar.IsStoring())
 	{
 		// TODO: add storing code here
@@ -80,6 +69,10 @@ void MyRectangle::Serialize(CArchive& ar) {
 		ar << controlPoints.size();
 		for each (ControlPoint * cp in controlPoints) {
 			ar << cp->getX() << cp->getY();
+		}
+		ar << text.GetLength(); 
+		for (int i = 0; i < text.GetLength(); i++) {
+			ar << text[i]; 
 		}
 	}
 	else
@@ -98,5 +91,16 @@ void MyRectangle::Serialize(CArchive& ar) {
 			ar >> x >> y;
 			controlPoints.push_back(new ControlPoint(this, x, y));
 		}
+		
+		ar >> size; 
+		CString * string = new CString(); 
+		for (int i = 0; i < size; i++) {
+			wchar_t ch; 
+			ar >> ch; 
+			string->AppendChar(ch); 
+		}
+		text = *string; 
+
 	}
+
 }

@@ -10,6 +10,7 @@ private:
 public:
 	// Constructor/destructor for a line
 	Group(vector<Figure *> figures);
+	Group(); 
 	~Group(void);
 
 	// Draw a line using graphic context pDC
@@ -25,5 +26,8 @@ public:
 	void dragSelectedControlPoints(int, int); 
 	void setColor(COLORREF color); 
 
+	void Serialize(CArchive& archive);
+
+	DECLARE_SERIAL(Group);
 };
 

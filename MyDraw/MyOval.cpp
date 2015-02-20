@@ -1,6 +1,11 @@
 #include "StdAfx.h"
 #include "MyOval.h"
 
+
+
+IMPLEMENT_SERIAL(MyOval, Figure, 1);
+
+
 MyOval::MyOval(COLORREF color, int x0, int y0, int x1, int y1)
 	:Figure(Figure::FigureType::Rectangle, color)
 {
@@ -11,7 +16,9 @@ MyOval::MyOval(COLORREF color, int x0, int y0, int x1, int y1)
 MyOval::~MyOval(void)
 {
 }
-
+MyOval::MyOval(void)
+{
+}
 // Draw a MyOval using graphic context pDC
 void MyOval::draw(CDC* pDC)
 {
@@ -80,4 +87,37 @@ bool MyOval::isCloseTo(int x, int y)
 
 MyOval * MyOval::clone() const {
 	return new MyOval(*this); 
+}
+
+
+void MyOval::Serialize(CArchive& ar) {
+
+	if (ar.IsStoring())
+	{
+		// TODO: add storing code here
+		ar << figureColor;
+		ar << figureType;
+
+		ar << controlPoints.size();
+		for each (ControlPoint * cp in controlPoints) {
+			ar << cp->getX() << cp->getY();
+		}
+	}
+	else
+	{
+		// TODO: add loading code here
+		ar >> figureColor;
+
+		int foo;
+		ar >> foo;
+		FigureType type = (FigureType)foo;
+
+		int size;
+		ar >> size;
+		for (int i = 0; i < size; i++) {
+			int x, y;
+			ar >> x >> y;
+			controlPoints.push_back(new ControlPoint(this, x, y));
+		}
+	}
 }

@@ -9,6 +9,7 @@ class Line : public Figure
 public:
 	// Constructor/destructor for a line
 	Line(COLORREF color, int x0, int y0, int x1, int y1);
+	Line(); 
 	~Line(void);
 
 	// Draw a line using graphic context pDC
@@ -21,5 +22,8 @@ public:
 	bool isCloseTo(int x, int y);
 
 	Line * clone() const; 
+	void Serialize(CArchive& archive);
+
+	DECLARE_SERIAL(Line); 
 };
 

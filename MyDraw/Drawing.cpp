@@ -26,6 +26,9 @@
 #include "Rectangle.h"
 #include "MyOval.h"
 #include "Group.h"
+#include "TextDialog.h"
+#include "MyText.h"
+#include "MyImage.h"
 
 // Constructor/Destructor
 Drawing::Drawing(void)
@@ -340,6 +343,76 @@ Drawing::OnMouse(CView * cview, int nFlags, CPoint point) {
 
 				pushUndoStack();
 			}
+
+			else if (this->editMode == Drawing::NewTextMode) {
+
+				// Edit mode is NewRectangleMode. 
+				// This is because the user just selected the Figure->Rectangle menu
+
+				// Create a new rectangle.
+				
+				TextDialog dialog = new TextDialog(cview);
+				dialog.DoModal(); 
+
+				OutputDebugString(dialog.ItemText); 
+				
+				MyText * text = new MyText(this->currentColor, dialog.ItemText, point.x, point.y);
+
+				// Add to the list of figures
+				this->figures.push_back(text);
+
+				// Now switch to select mode
+				this->editMode = SelectMode;
+
+				// Select only the last control point of the line 
+				// so dragging will modify this control point.
+				this->selectAll(false);
+				//text->selectLast(true);
+
+				// Update previous mouse coordinates
+				this->previousX = point.x;
+				this->previousY = point.y;
+
+				// Redraw window. This will call the draw method.
+				cview->RedrawWindow();
+
+				pushUndoStack();
+			}
+			else if (this->editMode == Drawing::NewImageMode) {
+
+				// Edit mode is NewRectangleMode. 
+				// This is because the user just selected the Figure->Rectangle menu
+
+				// Create a new rectangle.
+
+				CString FileFormatSelection;
+				CFileDialog FileDialog(TRUE); 
+				FileDialog.DoModal();
+
+				OutputDebugString(FileDialog.GetPathName());
+
+				MyImage * image = new MyImage(FileDialog.GetPathName(), point.x, point.y);
+
+				// Add to the list of figures
+				this->figures.push_back(image);
+
+				// Now switch to select mode
+				this->editMode = SelectMode;
+
+				// Select only the last control point of the line 
+				// so dragging will modify this control point.
+				this->selectAll(false);
+				//text->selectLast(true);
+
+				// Update previous mouse coordinates
+				this->previousX = point.x;
+				this->previousY = point.y;
+
+				// Redraw window. This will call the draw method.
+				cview->RedrawWindow();
+
+				pushUndoStack();
+			}
 			else if (this->editMode == Drawing::NewOvalMode) {
 
 				// Edit mode is NewRectangleMode. 
@@ -598,7 +671,30 @@ void Drawing::drawSelectionRectangle(CDC *pDC)
 	pDC->LineTo(this->selectionRectangleX0, this->selectionRectangleY0);
 }
 
-void Drawing::Serialize(CArchive& ar) {} /*
+void Drawing::Serialize(CArchive& ar) {
+
+	if (ar.IsStoring())
+	{
+		// TODO: add storing code here
+		ar << figures.size(); 
+		for each (Figure * figure in figures) {
+			ar << figure; 
+		}
+	}
+	else
+	{
+		// TODO: add loading code here
+		int num; 
+		ar >> num; 
+		for (int i = 0; i < num; i++) {
+			Figure * figure; 
+			ar >> figure; 
+			figures.push_back(figure); 
+		}
+	}
+}
+
+/*
 	if (ar.IsStoring())
 	{
 		// TODO: add storing code here

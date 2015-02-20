@@ -25,7 +25,7 @@ class Figure;
 
 // A control point is an editable part of a figure
 // that can be used to move or resize the figure.
-class ControlPoint
+class ControlPoint : public CObject
 {
 	// Size of the square that represents a Control Point when selected.
 	enum { ControlPointDist = 8 };
@@ -67,5 +67,6 @@ public:
 	// Return true if the control point is inside the rectangle
 	// defined by x0, y0, x1, y1
 	bool isInsideArea(int x0, int y0, int x1, int y1); 
+
 };
 

@@ -25,6 +25,8 @@ MERCHANTABILITY AND FITNESS FOR ANY PARTICULAR PURPOSE.
 #include "Figure.h"
 #include "ControlPoint.h"
 
+IMPLEMENT_SERIAL(Figure, CObject, 1);
+
 const double Figure::smallDistance = 10;
 
 // Constructor and destructor
@@ -49,6 +51,9 @@ Figure::~Figure(void)
 {
 }
 
+Figure::Figure(void)
+{
+}
 // Get/Set id of this figure
 Figure::FigureType Figure::getFigureType() const
 {
@@ -194,4 +199,36 @@ Figure::setColor(COLORREF color) {
 COLORREF
 Figure::getColor() {
 	return figureColor; 
+}
+
+void Figure::Serialize(CArchive& ar) {
+
+	if (ar.IsStoring())
+	{
+		// TODO: add storing code here
+		ar << figureColor; 
+		ar << figureType; 
+		
+		ar << controlPoints.size(); 
+		for each (ControlPoint * cp in controlPoints) {
+			ar << cp->getX() << cp->getY();
+		}
+	}
+	else
+	{
+		// TODO: add loading code here
+		ar >> figureColor; 
+
+		int foo; 
+		ar >> foo; 
+		FigureType type = (FigureType)foo; 
+
+		int size; 
+		ar >> size; 
+		for (int i = 0; i < size; i++) {
+			int x, y; 
+			ar >> x >> y; 
+			controlPoints.push_back(new ControlPoint(this, x, y)); 
+		}
+	}
 }

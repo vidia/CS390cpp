@@ -61,6 +61,8 @@ public:
 	afx_msg void OnActionsBringtofront();
 	afx_msg void OnEditUndo();
 	afx_msg void OnFigureText();
+	afx_msg void OnFileExport();
+	afx_msg void OnFigureImage();
 };
 
 #ifndef _DEBUG  // debug version in MyDrawView.cpp

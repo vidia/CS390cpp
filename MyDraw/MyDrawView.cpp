@@ -41,6 +41,8 @@ BEGIN_MESSAGE_MAP(CMyDrawView, CView)
 	ON_COMMAND(ID_ACTIONS_BRINGTOFRONT, &CMyDrawView::OnActionsBringtofront)
 	ON_COMMAND(ID_EDIT_UNDO, &CMyDrawView::OnEditUndo)
 	ON_COMMAND(ID_FIGURE_TEXT, &CMyDrawView::OnFigureText)
+	ON_COMMAND(ID_FILE_EXPORT, &CMyDrawView::OnFileExport)
+	ON_COMMAND(ID_FIGURE_IMAGE, &CMyDrawView::OnFigureImage)
 END_MESSAGE_MAP()
 
 // CMyDrawView construction/destruction
@@ -252,7 +254,52 @@ void CMyDrawView::OnEditUndo()
 
 void CMyDrawView::OnFigureText()
 {
-	MessageBox(L"Welcome to the program, press OK to continue",L"Welcome", MB_OK);
+	CMyDrawDoc* pDoc = GetDocument();
+	pDoc->drawing.setEditMode(Drawing::NewTextMode);
+}
 
-	
+
+void CMyDrawView::OnFileExport()
+{
+	// TODO: Add your command handler code here
+	CMyDrawDoc* pDoc = GetDocument();
+
+
+	CString FileFormatSelection;
+	FileFormatSelection.Format(_T("Please add extensions at the end of file name \
+		(*.png, *.gif, *.jpeg, *.bmp) | *.png; *.gif; *.jpeg; *.bmp | "));
+		CFileDialog FileDialog(FALSE, NULL, NULL, OFN_OVERWRITEPROMPT, FileFormatSelection);
+	FileDialog.DoModal();
+	if (FileDialog.GetPathName().GetLength() <= 0)
+	{
+		return;
+	}
+	else
+	{
+		CDC MemDC;
+		MemDC.CreateCompatibleDC(dynamic_cast<CDC *>(pDoc));
+		CBitmap Bmp;
+
+		RECT rect;
+		GetClientRect(&rect);
+
+		Bmp.CreateCompatibleBitmap(dynamic_cast<CDC *>(&MemDC), rect.right, rect.bottom );
+		CBitmap *pOldBitmap = MemDC.SelectObject(&Bmp);
+		MemDC.BitBlt(0, 0, rect.right, rect.bottom, dynamic_cast<CDC *>(&MemDC), 0, 0, SRCCOPY);
+		MemDC.FloodFill(0, 0, RGB(255, 255, 255));
+		
+		MemDC.SelectObject(pOldBitmap);
+		//ReleaseDC(dynamic_cast<CDC *>(pDoc));
+
+
+		CImage TempImageObj;
+		TempImageObj.Attach((HBITMAP)Bmp.Detach());
+		TempImageObj.Save(FileDialog.GetPathName());
+	}
+}
+
+void CMyDrawView::OnFigureImage()
+{
+	CMyDrawDoc* pDoc = GetDocument();
+	pDoc->drawing.setEditMode(Drawing::NewImageMode);
 }

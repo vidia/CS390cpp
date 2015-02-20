@@ -120,12 +120,15 @@
     <ClCompile Include="MyDraw.cpp" />
     <ClCompile Include="MyDrawDoc.cpp" />
     <ClCompile Include="MyDrawView.cpp" />
+    <ClCompile Include="MyImage.cpp" />
     <ClCompile Include="MyOval.cpp" />
+    <ClCompile Include="MyText.cpp" />
     <ClCompile Include="Rectangle.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="TextDialog.cpp" />
     <ClCompile Include="TextFigureDialog.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -139,11 +142,14 @@
     <ClInclude Include="MyDraw.h" />
     <ClInclude Include="MyDrawDoc.h" />
     <ClInclude Include="MyDrawView.h" />
+    <ClInclude Include="MyImage.h" />
     <ClInclude Include="MyOval.h" />
+    <ClInclude Include="MyText.h" />
     <ClInclude Include="Rectangle.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="TextDialog.h" />
     <ClInclude Include="TextFigureDialog.h" />
   </ItemGroup>
   <ItemGroup>
