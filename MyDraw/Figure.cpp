@@ -28,7 +28,7 @@ MERCHANTABILITY AND FITNESS FOR ANY PARTICULAR PURPOSE.
 const double Figure::smallDistance = 10;
 
 // Constructor and destructor
-Figure::Figure(FigureType figureType, COLORREF color) 
+Figure::Figure(FigureType figureType, COLORREF color) : CObject()
 {
 	this->figureType = figureType;
 	this->figureColor = color; 
@@ -189,4 +189,9 @@ double Figure::distancePointToLine(double x0, double y0, double x1, double y1, d
 void 
 Figure::setColor(COLORREF color) {
 	figureColor = color; 
+}
+
+COLORREF
+Figure::getColor() {
+	return figureColor; 
 }

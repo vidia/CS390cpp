@@ -3,21 +3,21 @@
   Gustavo Rodriguez-Rivera
   All rights reserved.
 
-This work was developed by the author(s) at Purdue University
-during 2011.
+  This work was developed by the author(s) at Purdue University
+  during 2011.
 
-Redistribution and use in source and binary forms are permitted provided that
-this entire copyright notice is duplicated in all such copies.  No charge,
-other than an "at-cost" distribution fee, may be charged for copies,
-derivations, or distributions of this material without the express written
-consent of the copyright holders. Neither the name of the University, nor the
-name of the author may be used to endorse or promote products derived from
-this material without specific prior written permission.
+  Redistribution and use in source and binary forms are permitted provided that
+  this entire copyright notice is duplicated in all such copies.  No charge,
+  other than an "at-cost" distribution fee, may be charged for copies,
+  derivations, or distributions of this material without the express written
+  consent of the copyright holders. Neither the name of the University, nor the
+  name of the author may be used to endorse or promote products derived from
+  this material without specific prior written permission.
 
-THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY EXPRESS OR IMPLIED
-WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR ANY PARTICULAR PURPOSE.
-*/
+  THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY EXPRESS OR IMPLIED
+  WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
+  MERCHANTABILITY AND FITNESS FOR ANY PARTICULAR PURPOSE.
+  */
 
 #include "StdAfx.h"
 #include "Drawing.h"
@@ -43,7 +43,7 @@ Drawing::~Drawing(void)
 
 // Draw the figures in the Drawing.
 // Called by the draw method in MyDrawView
-void 
+void
 Drawing::draw(CDC* pDC)
 {
 	// For each figure in vector "figures" draw the figure with control points.
@@ -57,7 +57,7 @@ Drawing::draw(CDC* pDC)
 }
 
 // Set the edit mode for the editor.
-void 
+void
 Drawing::setEditMode(EditMode mode)
 {
 	this->editMode = mode;
@@ -598,3 +598,93 @@ void Drawing::drawSelectionRectangle(CDC *pDC)
 	pDC->LineTo(this->selectionRectangleX0, this->selectionRectangleY0);
 }
 
+void Drawing::Serialize(CArchive& ar) {} /*
+	if (ar.IsStoring())
+	{
+		// TODO: add storing code here
+		ar << currentColor; 
+		ar << figures.size(); 
+		for each (Figure * figure in figures) {
+			Figure::FigureType type = figure->getFigureType(); 
+			ar << type; 
+
+			if (type == Figure::FigureType::Group) {
+				Group * group = dynamic_cast<Group *>(figure); 
+				
+				vector<Figure *> gfigs = group->getFigures(); 
+
+				ar << gfigs.size(); 
+
+				for each (Figure * figure in gfigs) {
+					ar << figure->getFigureType(); 
+					ar << figure->getColor();
+					for each (ControlPoint * cp in figure->getControlPoints()) {
+						ar << cp->getX() << cp->getY();
+					}
+				}
+			}
+			else {
+				ar << figure->getColor(); 
+				for each (ControlPoint * cp in figure->getControlPoints()) {
+					ar << cp->getX() << cp->getY(); 
+				}
+			}
+			
+		}
+	}
+	else
+	{
+		ar >> currentColor; 
+		int numFigures; 
+		ar >> numFigures; 
+
+		for (int i = 0; i < numFigures; i++) {
+
+			int foo;
+			ar >> foo;
+			Figure::FigureType type = (Figure::FigureType) foo;
+
+			if (type == Figure::FigureType::Group) {
+				popGroupOffArchiveTo(ar,type, figures); 
+			}
+			else {
+				popFigureOffArchiveTo(ar, figures); 
+			}
+			
+		}
+	}
+}
+
+void Drawing::popFigureOffArchiveTo(CArchive& ar, Figure::FigureType type, vector<Figure *> vect) {
+	COLORREF color;
+	ar >> color;
+	int x, y, xx, yy;
+	ar >> x >> y >> xx >> yy;
+	Figure * fig;
+	switch (type) {
+	case Figure::FigureType::Circle:
+		fig = new MyOval(color, x, y, xx, yy);
+		break;
+	case Figure::FigureType::Line:
+		fig = new Line(color, x, y, xx, yy);
+		break;
+	case Figure::FigureType::Rectangle:
+		fig = new MyRectangle(color, x, y, xx, yy);
+		break;
+
+	}
+	vect.push_back(fig);
+}
+
+void Drawing::popGroupOffArchiveTo(CArchive& ar, vector<Figure *> vect) {
+	int gsize;
+	ar >> gsize;
+	for (int v = 0; v < gsize; v++) {
+
+		vector<Figure *> gfigs; 
+		
+		Figure::FigureType type = 
+
+
+	}
+}*/

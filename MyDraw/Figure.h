@@ -28,8 +28,7 @@ using namespace std;
 
 // Defines a generic figure. 
 // Other classes like Line, Rectangle, Circle etc. Inherit from Figure.
-class Figure
-{
+class Figure : public CObject {
 public:
 	// Figure type. You may need to add more types here
 	enum FigureType { Line, Rectangle, Circle, Text, Group };
@@ -49,7 +48,7 @@ public:
 
 	// Constructor and destructor
 	Figure(FigureType figureType, COLORREF color);
-	Figure(const Figure & ); 
+	Figure(const Figure & );  
 	~Figure(void);
 
 	// Get the list of all control points
@@ -97,5 +96,8 @@ public:
 	virtual Figure * clone() const = 0;
 
 	virtual void setColor(COLORREF color);
+	virtual COLORREF getColor();
+
+	virtual void Serialize(CArchive &ar); 
 };
 

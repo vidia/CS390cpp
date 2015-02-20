@@ -66,6 +66,7 @@ private:
 	// If disabled, the draw method will not draw the selection rectangle.
 	bool selectionRectangleEnabled;
 
+
 	// Coordinates of the selection rectangle.
 	int selectionRectangleX0, selectionRectangleY0, selectionRectangleX1, selectionRectangleY1;
 
@@ -135,5 +136,7 @@ public:
 	void bringSelectionToFront(CView * cview); 
 
 	void undo(CView * cview); 
+
+	void Serialize(CArchive& ar); 
 };
 

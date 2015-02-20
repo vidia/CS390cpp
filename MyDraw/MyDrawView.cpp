@@ -40,6 +40,7 @@ BEGIN_MESSAGE_MAP(CMyDrawView, CView)
 	ON_COMMAND(ID_ACTIONS_SENDTOBACK, &CMyDrawView::OnActionsSendtoback)
 	ON_COMMAND(ID_ACTIONS_BRINGTOFRONT, &CMyDrawView::OnActionsBringtofront)
 	ON_COMMAND(ID_EDIT_UNDO, &CMyDrawView::OnEditUndo)
+	ON_COMMAND(ID_FIGURE_TEXT, &CMyDrawView::OnFigureText)
 END_MESSAGE_MAP()
 
 // CMyDrawView construction/destruction
@@ -246,4 +247,12 @@ void CMyDrawView::OnEditUndo()
 {
 	CMyDrawDoc* pDoc = GetDocument();
 	pDoc->drawing.undo(this);
+}
+
+
+void CMyDrawView::OnFigureText()
+{
+	MessageBox(L"Welcome to the program, press OK to continue",L"Welcome", MB_OK);
+
+	
 }

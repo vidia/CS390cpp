@@ -178,6 +178,7 @@ BEGIN
         MENUITEM "Line",                        ID_FIGURE_LINE
         MENUITEM "Rectangle",                   ID_FIGURE_RECTANGLE
         MENUITEM "Oval",                        ID_FIGURE_OVAL
+        MENUITEM "Text",                        ID_FIGURE_TEXT
     END
     POPUP "Color"
     BEGIN
@@ -248,6 +249,12 @@ BEGIN
     PUSHBUTTON      "Cancel",IDCANCEL,283,143,50,14
 END
 
+IDD_FORMVIEW DIALOGEX 0, 0, 185, 93
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD
+FONT 8, "MS Shell Dlg", 400, 0, 0x0
+BEGIN
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -310,6 +317,14 @@ BEGIN
         RIGHTMARGIN, 333
         TOPMARGIN, 7
         BOTTOMMARGIN, 157
+    END
+
+    IDD_FORMVIEW, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 178
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 86
     END
 END
 #endif    // APSTUDIO_INVOKED

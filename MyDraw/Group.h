@@ -24,5 +24,6 @@ public:
 
 	void dragSelectedControlPoints(int, int); 
 	void setColor(COLORREF color); 
+
 };
 

@@ -1,5 +1,8 @@
 #include "stdafx.h"
 #include "Group.h"
+#include "MyOval.h"
+#include "Rectangle.h"
+#include "Line.h"
 
 
 Group::Group(vector<Figure *> figs)

@@ -50,12 +50,14 @@ BOOL CMyDrawDoc::OnNewDocument()
 void CMyDrawDoc::Serialize(CArchive& ar)
 {
 	if (ar.IsStoring())
-	{
+	{ 
 		// TODO: add storing code here
+		drawing.Serialize(ar);
 	}
 	else
 	{
 		// TODO: add loading code here
+		drawing.Serialize(ar); 
 	}
 }
 
